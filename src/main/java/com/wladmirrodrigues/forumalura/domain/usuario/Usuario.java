@@ -28,7 +28,7 @@ public class Usuario implements UserDetails {
 
     private Boolean ativo;
 
-    public Usuario(DadosCadastroUsuario dados, PasswordEncoder passwordEncoder) {
+    public Usuario(DadosUsuario dados, PasswordEncoder passwordEncoder) {
         this.ativo = true;
         this.login = dados.login();
         this.senha = passwordEncoder.encode(dados.senha());
