@@ -40,7 +40,7 @@ public class Topico {
         this.titulo = dados.titulo();
         this.mensagem = dados.mensagem();
         this.autor = dados.autor();
-        this.dataCriacao = LocalDateTime.now();
+        this.dataCriacao = LocalDateTime.now().withNano(0).withSecond(0);;
         this.status = Status.ABERTO;
         this.usuario = usuario;
         this.curso = curso;

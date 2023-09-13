@@ -1,5 +1,6 @@
 package com.wladmirrodrigues.forumalura.domain.topico;
 
+import com.wladmirrodrigues.forumalura.domain.ValidacaoException;
 import com.wladmirrodrigues.forumalura.domain.curso.CursoRepository;
 import com.wladmirrodrigues.forumalura.domain.topico.validacoes.ValidadorCadastroTopico;
 import com.wladmirrodrigues.forumalura.domain.usuario.UsuarioRepository;
@@ -28,7 +29,7 @@ public class TopicoService {
         var login = tokenService.getSubject(token);
         var usuario = usuarioRepository.getReferenceByLogin(login);
         if(!cursoRepository.existsByNome(dados.curso())){
-            throw new RuntimeException("Curso não cadastrado");
+            throw new ValidacaoException("Curso não cadastrado");
         }
         var curso = cursoRepository.findByNome(dados.curso());
         var topico = new Topico(dados, usuario, curso);

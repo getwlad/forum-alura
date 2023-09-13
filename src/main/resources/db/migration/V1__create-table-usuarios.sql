@@ -1,5 +1,5 @@
 
-CREATE TABLE IF NOT EXISTS `db_forum_alura`.`usuarios` (
+CREATE TABLE IF NOT EXISTS  usuarios (
                                                            `id` INT NOT NULL AUTO_INCREMENT,
                                                            `login` VARCHAR(45) NOT NULL,
     `senha` VARCHAR(255) NOT NULL,

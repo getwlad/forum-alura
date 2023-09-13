@@ -28,10 +28,10 @@ public class Usuario implements UserDetails {
 
     private Boolean ativo;
 
-    public Usuario(DadosUsuario dados, PasswordEncoder passwordEncoder) {
+    public Usuario(String login, String senha) {
         this.ativo = true;
-        this.login = dados.login();
-        this.senha = passwordEncoder.encode(dados.senha());
+        this.login = login;
+        this.senha =  senha;
     }
 
 
