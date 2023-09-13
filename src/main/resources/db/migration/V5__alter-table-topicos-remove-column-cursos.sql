@@ -1,0 +1,1 @@
+ALTER table topicos DROP column curso;

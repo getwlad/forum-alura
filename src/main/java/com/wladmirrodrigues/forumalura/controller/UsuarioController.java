@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ public class UsuarioController {
     private TokenService tokenService;
 
     @PostMapping("/cadastrar")
+    @Transactional
     public ResponseEntity cadastrarUsuario(@RequestBody @Valid DadosUsuario dados){
         if(usuarioRepository.existsByLogin(dados.login())){
             throw new RuntimeException("Usuário já cadastrado");
