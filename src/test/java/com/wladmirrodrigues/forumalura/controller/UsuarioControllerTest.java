@@ -18,6 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -66,8 +69,34 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
     @Test
-    @DisplayName("Deve fazer login e obter tokenJWT")
+    @DisplayName("Deve fazer login com credenciais válidas e obter tokenJWT")
     void testarLogin()  throws Exception{
-       
+        String login = "login";
+        String senha = "senha";
+        String senhaEncriptada = passwordEncoder.encode(senha);
+        Usuario usuario = new Usuario(login, senhaEncriptada);
+        when(usuarioRepository.findByLogin(login)).thenReturn(usuario);
+       var response = mockMvc.perform(post("/usuario/login")
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(dadosUsuarioJson.write(new DadosUsuario("login", "senha")).getJson()))
+               .andReturn().getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("token");
     }
+    @Test
+    @DisplayName("Não deve fazer login com credenciais inválidas")
+    void testarLogin2()  throws Exception{
+        String login = "login";
+        String senha = "senha";
+        String senhaEncriptada = passwordEncoder.encode(senha);
+        Usuario usuario = new Usuario(login, senhaEncriptada);
+        when(usuarioRepository.findByLogin(login)).thenReturn(usuario);
+        var response = mockMvc.perform(post("/usuario/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(dadosUsuarioJson.write(new DadosUsuario("login", "senhaErrada")).getJson()))
+                .andReturn().getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+
+    }
+
 }
