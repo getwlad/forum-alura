@@ -39,5 +39,11 @@ public class TopicoController {
         var topico = topicoRepository.getReferenceById(id);
         return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
     }
+    @DeleteMapping("{id}")
+    public ResponseEntity excluirTopico(@PathVariable Long id){
+        var topico = topicoRepository.getReferenceById(id);
+        topicoRepository.delete(topico);
+        return ResponseEntity.noContent().build();
+    }
 
 }

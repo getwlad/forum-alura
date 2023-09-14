@@ -45,4 +45,6 @@ public class Topico {
         this.usuario = usuario;
         this.curso = curso;
     }
+
+
 }
