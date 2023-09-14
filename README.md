@@ -15,10 +15,10 @@ objetivo é fazer uma API utilizando o Spring Boot.
 ## :hammer: Funcionalidades e recursos do projeto
 
 - Permite criar, obter, listar, atualizar e excluir um tópico;
-- Permite criar e autenticar um usuário;
+- Permite criar e autenticar um usuário via JWT com Spring Security;
 - Autenticação via JWT;
 - Testes automatizados;
-- Documentação com swagger.
+- Documentação com Spring Doc.
 - Banco de dados para armazenar todos os dados.
   
 ## :floppy_disk: Documentação
