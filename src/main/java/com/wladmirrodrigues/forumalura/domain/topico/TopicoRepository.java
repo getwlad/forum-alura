@@ -1,7 +1,11 @@
 package com.wladmirrodrigues.forumalura.domain.topico;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+
 
 public interface TopicoRepository extends JpaRepository<Topico, Long> {
 
@@ -16,4 +20,6 @@ public interface TopicoRepository extends JpaRepository<Topico, Long> {
 """
     )
     Topico findByTituloAndMensagem(String titulo, String mensagem);
+
+    Page<Topico> findAll(Pageable paginacao);
 }
