@@ -1,6 +1,6 @@
 package com.wladmirrodrigues.forumalura.controller;
 
-import com.wladmirrodrigues.forumalura.curso.DadosCadastroCurso;
+import com.wladmirrodrigues.forumalura.domain.curso.DadosCadastroCurso;
 import com.wladmirrodrigues.forumalura.domain.curso.Curso;
 import com.wladmirrodrigues.forumalura.domain.curso.CursoRepository;
 import jakarta.validation.Valid;

@@ -1,6 +1,6 @@
 package com.wladmirrodrigues.forumalura.domain.topico;
 
-import com.wladmirrodrigues.forumalura.curso.DadosCadastroCurso;
+import com.wladmirrodrigues.forumalura.domain.curso.DadosCadastroCurso;
 import com.wladmirrodrigues.forumalura.domain.curso.Curso;
 import com.wladmirrodrigues.forumalura.domain.usuario.Usuario;
 import org.junit.jupiter.api.DisplayName;

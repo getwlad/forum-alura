@@ -1,4 +1,4 @@
-package com.wladmirrodrigues.forumalura.curso;
+package com.wladmirrodrigues.forumalura.domain.curso;
 
 import jakarta.validation.constraints.NotBlank;
 

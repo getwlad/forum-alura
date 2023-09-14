@@ -1,4 +1,5 @@
 package com.wladmirrodrigues.forumalura.controller;
+import com.wladmirrodrigues.forumalura.domain.ValidacaoException;
 import com.wladmirrodrigues.forumalura.domain.topico.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -39,7 +40,22 @@ public class TopicoController {
         var topico = topicoRepository.getReferenceById(id);
         return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
     }
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity atualizarTopico(@PathVariable Long id, @RequestBody DadosAtualizarTopico dados){
+        var topico = topicoRepository.getReferenceById(id);
+        if(dados.curso() != null){
+            var curso = topicoService.obterCurso(dados.curso());
+            if(curso == null){
+                throw new ValidacaoException("O curso informado não existe, certifique se passar corretamente o nome");
+            };
+            topico.atualizarCurso(curso);
+        }
+        topico.atualizar(dados);
+        return  ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
+    }
     @DeleteMapping("{id}")
+    @Transactional
     public ResponseEntity excluirTopico(@PathVariable Long id){
         var topico = topicoRepository.getReferenceById(id);
         topicoRepository.delete(topico);

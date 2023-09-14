@@ -1,6 +1,5 @@
 package com.wladmirrodrigues.forumalura.domain.curso;
 
-import com.wladmirrodrigues.forumalura.curso.DadosCadastroCurso;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,4 +19,5 @@ public class Curso {
     public Curso(DadosCadastroCurso dados) {
         this.nome = dados.nome();
     }
+
 }

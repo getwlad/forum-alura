@@ -1,12 +1,9 @@
 package com.wladmirrodrigues.forumalura.controller;
 
-import com.wladmirrodrigues.forumalura.curso.DadosCadastroCurso;
+import com.wladmirrodrigues.forumalura.domain.curso.DadosCadastroCurso;
 import com.wladmirrodrigues.forumalura.domain.curso.Curso;
 import com.wladmirrodrigues.forumalura.domain.curso.CursoRepository;
-import com.wladmirrodrigues.forumalura.domain.topico.DadosCadastroTopico;
-import com.wladmirrodrigues.forumalura.domain.topico.DadosDetalhamentoTopico;
-import com.wladmirrodrigues.forumalura.domain.topico.Topico;
-import com.wladmirrodrigues.forumalura.domain.topico.TopicoRepository;
+import com.wladmirrodrigues.forumalura.domain.topico.*;
 import com.wladmirrodrigues.forumalura.domain.usuario.Usuario;
 import com.wladmirrodrigues.forumalura.domain.usuario.UsuarioRepository;
 import com.wladmirrodrigues.forumalura.infra.security.TokenService;
@@ -47,6 +44,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
     private JacksonTester<DadosCadastroTopico> dadosCadastroTopicoJson;
     @Autowired
     private JacksonTester<DadosDetalhamentoTopico> dadosDetalhamentoTopicoJson;
+    @Autowired
+    private JacksonTester<DadosAtualizarTopico> dadosAtualizarTopicoJson;
     @MockBean
     private TopicoRepository topicoRepository;
     @MockBean
@@ -147,6 +146,28 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         var response = mockMvc.perform(delete("/topicos/1")
         ).andReturn().getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+    @Test
+    @DisplayName("Deve atualizar um tópico")
+    @WithMockUser
+    void atualizarCenario1()  throws Exception {
+        var usuario = criarUsuario();
+        var curso = criarCurso();
+        var topico = criarTopico(usuario, curso);
+        var cursoAtualizado = new Curso(new DadosCadastroCurso("frontend"));
+        when(cursoRepository.findByNome(any())).thenReturn(cursoAtualizado);
+        var dados = new DadosAtualizarTopico("213", null, "frontend", null, null);
+        var response = mockMvc.perform(put("/topicos/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(dadosAtualizarTopicoJson.write(dados).getJson())
+        ).andReturn().getResponse();
+
+        topico.atualizar(dados);
+        topico.atualizarCurso(cursoAtualizado);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).isEqualTo(dadosDetalhamentoTopicoJson.write(new DadosDetalhamentoTopico(topico)).getJson());
+
     }
 
     private Curso criarCurso() {
