@@ -34,5 +34,10 @@ public class TopicoController {
         var topicosPage = topicoRepository.findAll(paginacao).map(DadosListagemTopico::new);
         return ResponseEntity.ok(topicosPage);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity obterTopico(@PathVariable Long id){
+        var topico = topicoRepository.getReferenceById(id);
+        return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
+    }
 
 }

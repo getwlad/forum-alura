@@ -132,7 +132,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         var response = mockMvc.perform(get("/topicos")
         ).andReturn().getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-    
+
+    }
+    @Test
+    @DisplayName("Deve obter um tópico")
+    @WithMockUser
+    void detalharCenario1()  throws Exception {
+        var usuario = criarUsuario();
+        var curso = criarCurso();
+        criarTopico(usuario, curso);
+        var response = mockMvc.perform(get("/topicos/1")
+        ).andReturn().getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("id");
     }
 
     private Curso criarCurso() {
@@ -147,6 +159,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         when(usuarioRepository.getReferenceByLogin(any())).thenReturn(usuario);
         when(usuarioRepository.findByLogin(any())).thenReturn(usuario);
          return usuario;
+    }
+    private Topico criarTopico(Usuario usuario, Curso curso){
+        var dados = new DadosCadastroTopico("teste", "deTeste", "backend", "tetew");
+        var topico = new Topico(dados, usuario, curso);
+        when(topicoRepository.getReferenceById(any())).thenReturn(topico);
+        return topico;
     }
 
 }
