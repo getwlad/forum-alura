@@ -53,7 +53,7 @@ A implementação do projeto se deu por 8 sprints:
 | `Sprint 6` | Detalhamento de tópicos. |
 | `Sprint 7` | Exclusão de tópico. |
 | `Sprint 8` | Atualização de tópico. |
-
+| `Sprint Feature Extra` | Adição de respostas a tópicos. |
 
 ## :open_book: Tecnologias e Recursos Utilizados
 
