@@ -26,12 +26,14 @@ public class Usuario implements UserDetails {
     private String login;
     private String senha;
 
+    private String nome;
     private Boolean ativo;
 
-    public Usuario(String login, String senha) {
+    public Usuario(String login, String senha, String nome) {
         this.ativo = true;
         this.login = login;
         this.senha =  senha;
+        this.nome = nome;
     }
 
 

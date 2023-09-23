@@ -1,0 +1,1 @@
+ALTER table usuarios add  nome varchar(45);

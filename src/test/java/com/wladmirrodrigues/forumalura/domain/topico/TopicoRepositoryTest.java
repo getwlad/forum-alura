@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     @Test
     @DisplayName("Deve obter um tópico que já existe com o mesmo titulo e mensagem")
     void obterTopicoCenario1(){
-        var dados = new DadosCadastroTopico("teste", "topico teste", "backend", "Felipe");
+        var dados = new DadosCadastroTopico("teste", "topico teste", "backend");
         cadastrarTopico(dados);
         var topicoExiste = topicoRepository.findByTituloAndMensagem(dados.titulo(), dados.mensagem());
         assertThat(topicoExiste).isNotNull();
@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     @Test
     @DisplayName("Não deve obter um tópico com titulo e mensagem diferentes")
     void obterTopicoCenario2(){
-        var dados = new DadosCadastroTopico("teste", "topico teste", "backend", "Felipe");
+        var dados = new DadosCadastroTopico("teste", "topico teste", "backend");
         cadastrarTopico(dados);
         var topicoExiste = topicoRepository.findByTituloAndMensagem(dados.titulo(), "mensagem diferente");
         assertThat(topicoExiste).isNull();
@@ -45,7 +45,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
     private void cadastrarTopico(DadosCadastroTopico dados) {
         var curso = new Curso(new DadosCadastroCurso("backend"));
-        var usuario = new Usuario("test",  "1234");
+        var usuario = new Usuario("test",  "1234", "joao");
         em.persist(usuario);
         em.persist(curso);
         var topico = new Topico(dados ,usuario, curso);

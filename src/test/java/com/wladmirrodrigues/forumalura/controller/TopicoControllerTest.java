@@ -60,7 +60,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
     void cadastroCenario1() throws Exception {
         Usuario usuario = criarUsuario();
         var curso = criarCurso();
-        var dadosCadastroTopico = new DadosCadastroTopico("duvida sobre", "esta correto isso?", "backend", "Sebastiao Ferreira");
+        var dadosCadastroTopico = new DadosCadastroTopico("duvida sobre", "esta correto isso?", "backend");
         var topico = new Topico(dadosCadastroTopico, usuario, curso);
 
         when(topicoRepository.save(any())).thenReturn(topico);
@@ -89,7 +89,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "token")
                 .content(dadosCadastroTopicoJson.write(
-                                new DadosCadastroTopico(null, "213", "backend", "123")
+                                new DadosCadastroTopico(null, "213", "backend")
                         ).getJson()
                 )
         ).andReturn().getResponse();
@@ -105,7 +105,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "token")
                 .content(dadosCadastroTopicoJson.write(
-                                new DadosCadastroTopico("teste", "213", "backend", "123")
+                                new DadosCadastroTopico("teste", "213", "backend")
                         ).getJson()
                 )
         ).andReturn().getResponse();
@@ -156,7 +156,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         var topico = criarTopico(usuario, curso);
         var cursoAtualizado = new Curso(new DadosCadastroCurso("frontend"));
         when(cursoRepository.findByNome(any())).thenReturn(cursoAtualizado);
-        var dados = new DadosAtualizarTopico("213", null, "frontend", null, null);
+        var dados = new DadosAtualizarTopico("213", null, "frontend", null);
         var response = mockMvc.perform(put("/topicos/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(dadosAtualizarTopicoJson.write(dados).getJson())
@@ -178,13 +178,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
     }
 
     private Usuario criarUsuario() {
-        var usuario = new Usuario("test",  "1234");
+        var usuario = new Usuario("test",  "1234", "felipe");
         when(usuarioRepository.getReferenceByLogin(any())).thenReturn(usuario);
         when(usuarioRepository.findByLogin(any())).thenReturn(usuario);
          return usuario;
     }
     private Topico criarTopico(Usuario usuario, Curso curso){
-        var dados = new DadosCadastroTopico("teste", "deTeste", "backend", "tetew");
+        var dados = new DadosCadastroTopico("teste", "deTeste", "backend");
         var topico = new Topico(dados, usuario, curso);
         when(topicoRepository.getReferenceById(any())).thenReturn(topico);
         return topico;

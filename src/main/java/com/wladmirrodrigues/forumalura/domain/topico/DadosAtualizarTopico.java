@@ -7,7 +7,6 @@ public record DadosAtualizarTopico(
         String titulo,
         String mensagem,
         String curso,
-        String autor,
         Status status
 
 ) {

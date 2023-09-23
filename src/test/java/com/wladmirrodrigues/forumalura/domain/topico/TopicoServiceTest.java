@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         criarCurso();
         Usuario usuario = criarUsuario();
         var tokenUsuario = tokenService.gerarToken(usuario);
-        var dadosCadastroTopico = new DadosCadastroTopico("duvida sobre", "esta correto isso?", "backend", "Sebastiao Ferreira");
+        var dadosCadastroTopico = new DadosCadastroTopico("duvida sobre", "esta correto isso?", "backend");
         var topico = topicoService.cadastrarTopico(dadosCadastroTopico, tokenUsuario);
         assertThat(topico).isNotNull();
     }
@@ -44,7 +44,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
     private Usuario criarUsuario() {
-        var usuario = new Usuario("test",  "1234");
+        var usuario = new Usuario("test",  "1234", "joao");
         usuarioRepository.save(usuario);
         return usuario;
     }

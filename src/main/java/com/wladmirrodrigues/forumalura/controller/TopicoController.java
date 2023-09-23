@@ -37,12 +37,18 @@ public class TopicoController {
     }
     @GetMapping("/{id}")
     public ResponseEntity obterTopico(@PathVariable Long id){
+        if(!topicoRepository.existsById(id)){
+            throw new ValidacaoException("Tópico não encontrado");
+        }
         var topico = topicoRepository.getReferenceById(id);
         return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
     }
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity atualizarTopico(@PathVariable Long id, @RequestBody DadosAtualizarTopico dados){
+        if(!topicoRepository.existsById(id)){
+            throw new ValidacaoException("Tópico não encontrado");
+        }
         var topico = topicoRepository.getReferenceById(id);
         if(dados.curso() != null){
             var curso = topicoService.obterCurso(dados.curso());
@@ -57,6 +63,9 @@ public class TopicoController {
     @DeleteMapping("{id}")
     @Transactional
     public ResponseEntity excluirTopico(@PathVariable Long id){
+        if(!topicoRepository.existsById(id)){
+            throw new ValidacaoException("Tópico não encontrado");
+        }
         var topico = topicoRepository.getReferenceById(id);
         topicoRepository.delete(topico);
         return ResponseEntity.noContent().build();

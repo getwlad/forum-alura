@@ -1,6 +1,7 @@
 package com.wladmirrodrigues.forumalura.controller;
 
 
+import com.wladmirrodrigues.forumalura.domain.usuario.DadosCadastroUsuario;
 import com.wladmirrodrigues.forumalura.domain.usuario.DadosUsuario;
 import com.wladmirrodrigues.forumalura.domain.usuario.Usuario;
 import com.wladmirrodrigues.forumalura.domain.usuario.UsuarioRepository;
@@ -38,6 +39,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
     @Autowired
     private JacksonTester<DadosUsuario> dadosUsuarioJson;
     @Autowired
+    private JacksonTester<DadosCadastroUsuario> dadosCadastroUsuarioJson;
+    @Autowired
     private PasswordEncoder passwordEncoder;
     @Test
     @DisplayName("Deve cadastrar um usuário com informações válidas e senha encriptada")
@@ -51,7 +54,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         });
         var response = mockMvc.perform(post("/usuario/cadastrar")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(dadosUsuarioJson.write(new DadosUsuario("login", senha)).getJson())
+                .content(dadosCadastroUsuarioJson.write(new DadosCadastroUsuario("login", senha, "felipe")).getJson())
         ).andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
@@ -64,7 +67,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         when(usuarioRepository.existsByLogin(any())).thenReturn(true);
         var response = mockMvc.perform(post("/usuario/cadastrar")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(dadosUsuarioJson.write(new DadosUsuario("login", "senha")).getJson())
+                .content(dadosCadastroUsuarioJson.write(new DadosCadastroUsuario("login", "senha", "joao")).getJson())
         ).andReturn().getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
@@ -74,7 +77,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         String login = "login";
         String senha = "senha";
         String senhaEncriptada = passwordEncoder.encode(senha);
-        Usuario usuario = new Usuario(login, senhaEncriptada);
+        Usuario usuario = new Usuario(login, senhaEncriptada, "felipe");
         when(usuarioRepository.findByLogin(login)).thenReturn(usuario);
        var response = mockMvc.perform(post("/usuario/login")
                .contentType(MediaType.APPLICATION_JSON)
@@ -89,7 +92,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         String login = "login";
         String senha = "senha";
         String senhaEncriptada = passwordEncoder.encode(senha);
-        Usuario usuario = new Usuario(login, senhaEncriptada);
+        Usuario usuario = new Usuario(login, senhaEncriptada, "felipe");
         when(usuarioRepository.findByLogin(login)).thenReturn(usuario);
         var response = mockMvc.perform(post("/usuario/login")
                         .contentType(MediaType.APPLICATION_JSON)

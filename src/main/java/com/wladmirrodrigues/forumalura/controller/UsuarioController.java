@@ -2,6 +2,7 @@ package com.wladmirrodrigues.forumalura.controller;
 
 import com.wladmirrodrigues.forumalura.domain.ValidacaoException;
 import com.wladmirrodrigues.forumalura.domain.topico.DadosDetalhamentoTopico;
+import com.wladmirrodrigues.forumalura.domain.usuario.DadosCadastroUsuario;
 import com.wladmirrodrigues.forumalura.domain.usuario.DadosUsuario;
 import com.wladmirrodrigues.forumalura.domain.usuario.Usuario;
 import com.wladmirrodrigues.forumalura.domain.usuario.UsuarioRepository;
@@ -35,12 +36,12 @@ public class UsuarioController {
 
     @PostMapping("/cadastrar")
     @Transactional
-    public ResponseEntity cadastrarUsuario(@RequestBody @Valid DadosUsuario dados, UriComponentsBuilder uriBuilder){
+    public ResponseEntity cadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dados, UriComponentsBuilder uriBuilder){
         if(usuarioRepository.existsByLogin(dados.login())){
             throw new ValidacaoException("Usuário já cadastrado");
         };
         var senhaEncriptada = passwordEncoder.encode(dados.senha());
-        var usuario = new Usuario(dados.login(), senhaEncriptada);
+        var usuario = new Usuario(dados.login(), senhaEncriptada, "felipe");
         usuarioRepository.save(usuario);
         var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body("Cadastro realizado como sucesso");
