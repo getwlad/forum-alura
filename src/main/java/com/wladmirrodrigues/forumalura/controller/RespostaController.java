@@ -11,7 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/respostas")
-public class RespostasController {
+public class RespostaController {
     @Autowired
     private RespostaService respostaService;
     @PostMapping
