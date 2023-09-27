@@ -40,7 +40,7 @@ public class UsuarioController {
             throw new ValidacaoException("Usuário já cadastrado");
         };
         var senhaEncriptada = passwordEncoder.encode(dados.senha());
-        var usuario = new Usuario(dados.login(), senhaEncriptada, "felipe");
+        var usuario = new Usuario(dados.login(), senhaEncriptada, dados.nome());
         usuarioRepository.save(usuario);
         var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body("Cadastro realizado como sucesso");

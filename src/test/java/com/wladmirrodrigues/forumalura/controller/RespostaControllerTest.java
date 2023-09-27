@@ -80,7 +80,7 @@ public class RespostaControllerTest {
         resposta.setMensagem("mensagem atualizada");
         var dadosAtualizados = new DadosListagemResposta(resposta);
         when(respostaRepository.save(any())).thenReturn(resposta);
-        var response = mockMvc.perform(put("/topicos/1/respostas/1")
+        var response = mockMvc.perform(put("/respostas/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(dadosAtualizarRespostaJson.write(dadosAtualizarResposta).getJson())
                 .header("Authorization", "token")
@@ -94,7 +94,7 @@ public class RespostaControllerTest {
     @WithMockUser
     void apagarCenario1() throws Exception{
         criarResposta();
-        var response = mockMvc.perform(delete("/topicos/1/respostas/1")
+        var response = mockMvc.perform(delete("/respostas/1")
                 .header("Authorization", "token")).andReturn().getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
 
