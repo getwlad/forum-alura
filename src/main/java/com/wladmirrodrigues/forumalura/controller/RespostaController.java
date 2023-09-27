@@ -13,7 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 
 @RestController
-@RequestMapping("/topicos/{topicoId}/respostas")
+@RequestMapping()
 @SecurityRequirement(name = "bearer-key")
 public class RespostaController {
     @Autowired
@@ -23,7 +23,7 @@ public class RespostaController {
     @Autowired
     private TopicoRepository topicoRepository;
 
-    @GetMapping
+    @GetMapping("/topicos/{topicoId}/respostas")
     public ResponseEntity obterRespostas(@PathVariable Long topicoId, Pageable paginacao){
         if(!topicoRepository.existsById(topicoId)){
             throw new ValidacaoException("Tópico não encontrado");
@@ -31,13 +31,13 @@ public class RespostaController {
         var respostas = respostaRepository.findAllByTopicoId(topicoId, paginacao).map(DadosListagemResposta::new);;
         return ResponseEntity.ok(respostas);
     }
-    @PostMapping
+    @PostMapping("/topicos/{topicoId}/respostas")
     public ResponseEntity enviarResposta(@RequestBody @Valid DadosRegistrarResposta dados, @PathVariable Long topicoId, @RequestHeader(name="Authorization") String headerToken, UriComponentsBuilder uriBuilder){
         var resposta = respostaService.cadastroResposta(topicoId, dados, headerToken);
-        var uri = uriBuilder.path("/respostas/{id}").buildAndExpand(resposta.getId()).toUri();
+        var uri = uriBuilder.path("/respostas/{id}").buildAndExpand(topicoId, resposta.getId()).toUri();
         return ResponseEntity.created(uri).body( new DadosListagemResposta(resposta));
     }
-    @PutMapping("/{id}")
+    @PutMapping("/respostas/{id}")
     public ResponseEntity atualizarResposta(@RequestBody @Valid DadosAtualizarResposta dados, @PathVariable Long id, @RequestHeader(name="Authorization") String headerToken, UriComponentsBuilder uriBuilder){
         if(!respostaRepository.existsById(id)){
             throw new ValidacaoException("Mensagem não encontrada");
@@ -50,7 +50,7 @@ public class RespostaController {
 
         return ResponseEntity.ok( new DadosListagemResposta(resposta));
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/respostas/{id}")
     public ResponseEntity excluirResposta(@PathVariable Long id, @RequestHeader(name="Authorization") String headerToken){
         if(!respostaRepository.existsById(id)){
             throw new ValidacaoException("Mensagem não encontrada");
