@@ -1,7 +1,6 @@
 package com.wladmirrodrigues.forumalura.controller;
 
 import com.wladmirrodrigues.forumalura.domain.ValidacaoException;
-import com.wladmirrodrigues.forumalura.domain.topico.DadosDetalhamentoTopico;
 import com.wladmirrodrigues.forumalura.domain.usuario.DadosCadastroUsuario;
 import com.wladmirrodrigues.forumalura.domain.usuario.DadosUsuario;
 import com.wladmirrodrigues.forumalura.domain.usuario.Usuario;

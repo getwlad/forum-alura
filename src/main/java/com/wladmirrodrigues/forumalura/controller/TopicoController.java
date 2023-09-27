@@ -45,28 +45,23 @@ public class TopicoController {
     }
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity atualizarTopico(@PathVariable Long id, @RequestBody DadosAtualizarTopico dados){
-        if(!topicoRepository.existsById(id)){
-            throw new ValidacaoException("Tópico não encontrado");
-        }
-        var topico = topicoRepository.getReferenceById(id);
-        if(dados.curso() != null){
-            var curso = topicoService.obterCurso(dados.curso());
-            if(curso == null){
-                throw new ValidacaoException("O curso informado não existe, certifique se passar corretamente o nome");
-            };
-            topico.atualizarCurso(curso);
-        }
-        topico.atualizar(dados);
+    public ResponseEntity atualizarTopico(@PathVariable Long id, @RequestBody DadosAtualizarTopico dados, @RequestHeader(name="Authorization") String headerToken){
+        //Pega o token da requisição que é necessário pra acessar a rota pra verificar se quem está tentando atualizar o tópico é o proprietário do mesmo
+        var token = headerToken.replace("Bearer", "").trim();
+        var topico = topicoService.atualizarTopico(id, dados, token);
+
         return  ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
     }
     @DeleteMapping("{id}")
     @Transactional
-    public ResponseEntity excluirTopico(@PathVariable Long id){
+    public ResponseEntity excluirTopico(@PathVariable Long id, @RequestHeader(name="Authorization") String headerToken){
         if(!topicoRepository.existsById(id)){
             throw new ValidacaoException("Tópico não encontrado");
         }
+        //Pega o token da requisição que é necessário pra acessar a rota pra verificar se quem está tentando apagar o tópico é o proprietário do mesmo
+        var token = headerToken.replace("Bearer", "").trim();
         var topico = topicoRepository.getReferenceById(id);
+        topicoService.validarProprietarioTopico(token, topico);
         topicoRepository.delete(topico);
         return ResponseEntity.noContent().build();
     }

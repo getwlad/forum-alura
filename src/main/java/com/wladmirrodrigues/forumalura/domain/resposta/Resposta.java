@@ -5,9 +5,7 @@ import com.wladmirrodrigues.forumalura.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity(name = "Resposta")
 @Table(name = "respostas")
@@ -35,5 +33,9 @@ public class Resposta {
         this.dataMensagem = LocalDateTime.now().withNano(0).withSecond(0);
         this.topico = topico;
         this.usuario = usuario;
+    }
+
+    public void atualizar(DadosAtualizarResposta dados) {
+        this.mensagem = dados.mensagem();
     }
 }

@@ -1,6 +1,6 @@
 package com.wladmirrodrigues.forumalura.domain.topico;
 
-import com.wladmirrodrigues.forumalura.domain.curso.Curso;
+
 
 
 import java.time.LocalDateTime;

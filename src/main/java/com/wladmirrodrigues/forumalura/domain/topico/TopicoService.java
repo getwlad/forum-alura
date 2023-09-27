@@ -4,6 +4,7 @@ import com.wladmirrodrigues.forumalura.domain.ValidacaoException;
 import com.wladmirrodrigues.forumalura.domain.curso.Curso;
 import com.wladmirrodrigues.forumalura.domain.curso.CursoRepository;
 import com.wladmirrodrigues.forumalura.domain.topico.validacoes.ValidadorCadastroTopico;
+import com.wladmirrodrigues.forumalura.domain.topico.validacoes.ValidadorPermissao;
 import com.wladmirrodrigues.forumalura.domain.usuario.UsuarioRepository;
 import com.wladmirrodrigues.forumalura.infra.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,11 @@ public class TopicoService {
     @Autowired
     private CursoRepository cursoRepository;
     @Autowired
-    private List<ValidadorCadastroTopico> validadores;
+    private List<ValidadorCadastroTopico> validadoresCadastro;
+    @Autowired
+    private List<ValidadorPermissao> validadoresPermissao;
     public Topico cadastrarTopico(DadosCadastroTopico dados, String headerToken) {
-        validadores.forEach(v -> v.validar(dados));
+        validadoresCadastro.forEach(v -> v.validar(dados));
 
         var token = headerToken.replace("Bearer", "").trim();
         var login = tokenService.getSubject(token);
@@ -41,5 +44,28 @@ public class TopicoService {
 
     public Curso obterCurso(String nome) {
         return cursoRepository.findByNome(nome);
+    }
+
+    public Topico atualizarTopico(Long id, DadosAtualizarTopico dados, String token) {
+        if(!topicoRepository.existsById(id)){
+            throw new ValidacaoException("Tópico não encontrado");
+        }
+        var topico = topicoRepository.getReferenceById(id);
+
+        validarProprietarioTopico(token, topico);
+
+        if(dados.curso() != null){
+            var curso = this.obterCurso(dados.curso());
+            if(curso == null){
+                throw new ValidacaoException("O curso informado não existe, certifique se passar corretamente o nome");
+            };
+            topico.atualizarCurso(curso);
+        }
+        topico.atualizar(dados);
+        return topico;
+    }
+
+    public void validarProprietarioTopico(String token, Topico topico){
+        validadoresPermissao.forEach(v -> v.validar(token, topico));
     }
 }

@@ -1,18 +1,12 @@
 package com.wladmirrodrigues.forumalura.domain.topico;
 
 import com.wladmirrodrigues.forumalura.domain.curso.Curso;
-import com.wladmirrodrigues.forumalura.domain.curso.DadosCadastroCurso;
-import com.wladmirrodrigues.forumalura.domain.resposta.DadosListagemResposta;
-import com.wladmirrodrigues.forumalura.domain.resposta.Resposta;
 import com.wladmirrodrigues.forumalura.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity(name = "Topico")
 @Table(name = "topicos")
@@ -42,8 +36,6 @@ public class Topico {
     @JoinColumn(name = "cursos_id")
     private Curso curso;
 
-    @OneToMany(mappedBy = "topico", fetch = FetchType.LAZY)
-    private List<Resposta> resposta;
 
     public Topico(DadosCadastroTopico dados, Usuario usuario, Curso curso) {
         this.titulo = dados.titulo();
@@ -73,16 +65,4 @@ public class Topico {
         }
     }
 
-    public List<DadosListagemResposta> getListagemRespostas() {
-        List<DadosListagemResposta> listaRespostas = new ArrayList<>();
-        if(this.getResposta() == null){
-            return listaRespostas;
-        }
-
-       this.getResposta().forEach(resposta -> {
-           listaRespostas.add(new DadosListagemResposta(resposta.getMensagem(), resposta.getDataMensagem(), resposta.getUsuario().getNome()));
-       });
-        
-        return listaRespostas;
-    }
 }

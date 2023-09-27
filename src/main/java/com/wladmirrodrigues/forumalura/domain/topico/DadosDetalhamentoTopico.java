@@ -1,10 +1,7 @@
 package com.wladmirrodrigues.forumalura.domain.topico;
 
-import com.wladmirrodrigues.forumalura.domain.curso.Curso;
-import com.wladmirrodrigues.forumalura.domain.resposta.DadosListagemResposta;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public record DadosDetalhamentoTopico (
         Long id,
@@ -15,8 +12,7 @@ public record DadosDetalhamentoTopico (
         String curso,
         Long cursoId,
         String autor,
-        Long usuarioId,
-        List<DadosListagemResposta> respostas
+        Long usuarioId
 ){
     public DadosDetalhamentoTopico(Topico topico) {
         this(
@@ -28,8 +24,7 @@ public record DadosDetalhamentoTopico (
                 topico.getCurso().getNome(),
                 topico.getCurso().getId(),
                 topico.getUsuario().getNome(),
-                topico.getUsuario().getId(),
-                topico.getListagemRespostas()
+                topico.getUsuario().getId()
         );
     }
 }

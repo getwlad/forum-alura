@@ -134,6 +134,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         var usuario = criarUsuario();
         var curso = criarCurso();
         criarTopico(usuario, curso);
+        when(topicoRepository.existsById(any())).thenReturn(true);
         var response = mockMvc.perform(get("/topicos/1")
         ).andReturn().getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
@@ -143,7 +144,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
     @DisplayName("Deve excluir um tópico")
     @WithMockUser
     void excluirCenario1()  throws Exception {
-        var response = mockMvc.perform(delete("/topicos/1")
+        var usuario = criarUsuario();
+        var curso = criarCurso();
+        var topico = criarTopico(usuario, curso);
+        when(topicoRepository.existsById(any())).thenReturn(true);
+        var response = mockMvc.perform(delete("/topicos/1").header("Authorization", "token")
         ).andReturn().getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
@@ -156,10 +161,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         var topico = criarTopico(usuario, curso);
         var cursoAtualizado = new Curso(new DadosCadastroCurso("frontend"));
         when(cursoRepository.findByNome(any())).thenReturn(cursoAtualizado);
+        when(topicoRepository.existsById(any())).thenReturn(true);
+
         var dados = new DadosAtualizarTopico("213", null, "frontend", null);
         var response = mockMvc.perform(put("/topicos/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(dadosAtualizarTopicoJson.write(dados).getJson())
+                .header("Authorization", "token")
         ).andReturn().getResponse();
 
         topico.atualizar(dados);
@@ -181,6 +189,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         var usuario = new Usuario("test",  "1234", "felipe");
         when(usuarioRepository.getReferenceByLogin(any())).thenReturn(usuario);
         when(usuarioRepository.findByLogin(any())).thenReturn(usuario);
+        //definindo para que o token service retorne o mesmo login do usuário
+        when(tokenService.getSubject(any())).thenReturn("test");
          return usuario;
     }
     private Topico criarTopico(Usuario usuario, Curso curso){
