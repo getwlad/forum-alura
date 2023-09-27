@@ -23,7 +23,7 @@ objetivo é fazer uma API utilizando o Spring Boot.
   
 ## :floppy_disk: Documentação
 A documentação está disponível na url `seuservidor/swagger-ui/index.html`
-![Web 1](https://github.com/getwlad/assets/blob/main/docForumAlura.png)
+![Web 1](https://github.com/getwlad/assets/blob/main/docForumAlura1.png)
 
 ## :hammer_and_wrench: Instalação
 Você pode obter uma cópia do projeto através do comando
